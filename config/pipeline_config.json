@@ -1,0 +1,16 @@
+{
+  "database_name": "fraud_detection_db",
+  "paths": {
+    "raw_accounts": "/Workspace/smart-fraud-detection-pipeline/data/raw/accounts.csv",
+    "raw_transactions": "/Workspace/smart-fraud-detection-pipeline/data/raw/transactions.csv",
+    "raw_watchlist": "/Workspace/smart-fraud-detection-pipeline/data/raw/fraud_watchlist.csv",
+    "checkpoint_dir": "/Workspace/smart-fraud-detection-pipeline/data/checkpoint/"
+  },
+  "tables": {
+    "bronze_accounts": "fraud_detection_db.bronze_accounts",
+    "bronze_transactions": "fraud_detection_db.bronze_transactions",
+    "bronze_watchlist": "fraud_detection_db.bronze_watchlist",
+    "silver_enriched_transactions": "fraud_detection_db.silver_enriched_transactions",
+    "gold_flagged_transactions": "fraud_detection_db.gold_flagged_transactions"
+  }
+}
