@@ -14,9 +14,7 @@ The pipeline ingests transactional logs, customer account information, and fraud
 
 Fraud detection is based on the following business rule:
 
-\[
-\text{Transaction Date} \geq \text{Watchlist Flagged Date}
-\]
+Transaction date > watchlist flagged date
 
 If an account appears in the fraud watchlist, every transaction occurring **on or after** the flagged date is classified as **Fraud**, while transactions occurring **before** the flagged date remain classified as **Normal**.
 
