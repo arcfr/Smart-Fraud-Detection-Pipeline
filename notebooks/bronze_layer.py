@@ -38,11 +38,14 @@ def ingest_csv_to_bronze(relative_source_path, target_table, schema):
     if not absolute_source_path.startswith("/Workspace"):
         absolute_source_path = os.path.abspath(absolute_source_path)
     
+    # CRITICAL FIX: Prefix the workspace path with 'file:' so Spark knows to read from the local repo directory
+    spark_compatible_path = f"file:{absolute_source_path}"
+    
     df = spark.read \
         .format("csv") \
         .option("header", "true") \
         .schema(schema) \
-        .load(absolute_source_path)
+        .load(spark_compatible_path)
     
     df.write \
         .format("delta") \
