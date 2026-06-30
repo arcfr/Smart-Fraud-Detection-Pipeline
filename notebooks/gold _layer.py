@@ -46,7 +46,7 @@ gold_flagged_df.write \
     .mode("overwrite") \
     .saveAsTable(config["tables"]["gold_flagged_transactions"])
 
-print("Gold Fraud Flagged table updated successfully. Generating Business Insights Dashboard below...\n")
+print("Gold Fraud Flagged table updated successfully\n")
 
 # Calculate high-level pipeline KPIs including total, fraudulent, and normal transaction counts
 kpi_query = f"""
