@@ -1,9 +1,13 @@
 # Databricks notebook source
 import json
+import os
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType
 
 # 1. Load Configurations
-config_path = "/Workspace/smart-fraud-detection-pipeline/config/pipeline_config.json"
+notebook_dir = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
+project_root = os.path.dirname(notebook_dir)  # Steps out of 'notebooks/' into 'smart-fraud-detection-pipeline/'
+config_path = os.path.join(project_root, "config", "pipeline_config.json")
+
 with open(config_path, "r") as f:
     config = json.load(f)
 
