@@ -3,17 +3,21 @@ import json
 import os
 from pyspark.sql.functions import col, to_date, when
 
+# Resolve the project root directory paths dynamically
 notebook_dir = os.path.dirname(os.path.abspath(__file__)) if '__file__' in locals() else os.getcwd()
 project_root = os.path.dirname(notebook_dir)
 config_path = os.path.join(project_root, "config", "pipeline_config.json")
 
+# Load the central JSON configuration file
 with open(config_path, "r") as f:
     config = json.load(f)
 
+# Load the cleaned Silver transaction master records and the raw Bronze watchlist
 silver_df = spark.read.table(config["tables"]["silver_enriched_transactions"])
 watchlist_df = spark.read.table(config["tables"]["bronze_watchlist"]) \
     .withColumn("flagged_date", to_date(col("flagged_date"), "yyyy-MM-dd"))
 
+# Left join transactions with the watchlist and flag records as fraud if they occur on or after the watchlist date
 gold_flagged_df = silver_df.join(
     watchlist_df,
     on="account_id",
@@ -36,6 +40,7 @@ gold_flagged_df = silver_df.join(
     col("fraud_flag")
 )
 
+# Save the final flagged compliance dataset into the Gold Delta Lake table
 gold_flagged_df.write \
     .format("delta") \
     .mode("overwrite") \
@@ -43,6 +48,7 @@ gold_flagged_df.write \
 
 print("Gold Fraud Flagged table updated successfully. Generating Business Insights Dashboard below...\n")
 
+# Calculate high-level pipeline KPIs including total, fraudulent, and normal transaction counts
 kpi_query = f"""
 SELECT 
     (SELECT COUNT(*) FROM {config['tables']['gold_flagged_transactions']}) AS `Total Transactions`,
@@ -51,6 +57,7 @@ SELECT
 """
 spark.sql(kpi_query).show()
 
+# Aggregate financial exposure by calculating total fraud incidents and financial volume lost per account
 distribution_query = f"""
 SELECT 
     account_id,
