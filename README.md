@@ -64,20 +64,6 @@ The project follows the Medallion Architecture.
 
 ---
 
-## Features
-
-- End-to-end ETL pipeline
-- Medallion Architecture implementation
-- Header-based dynamic schema mapping
-- Column-order independent ingestion
-- Data cleaning and validation
-- Delta Lake storage
-- Fraud detection based on business rules
-- Aggregated analytical reporting
-- Optimized storage using ZORDER clustering
-
----
-
 ## Repository Structure
 
 ```text
